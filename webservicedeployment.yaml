@@ -44,7 +44,7 @@ spec:
           value: /https/aspnetapp.pfx
         - name: ASPNETCORE_URLS
           value: https://+:443;http://+80
-        image: frickson/necmsbucorewebservice
+        image: frickson/necmsbucorewebservice:dev
         name: webservice
         ports:
         - containerPort: 443
