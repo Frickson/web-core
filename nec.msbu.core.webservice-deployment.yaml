@@ -1,21 +1,20 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.7.0 (HEAD)
-  creationTimestamp: null
   labels:
-    io.kompose.service: nec.msbu.core.webservice
+   app: nec.msbu.core.webservice
   name: nec.msbu.core.webservice
 spec:
   replicas: 1
-  strategy: {}
+  selector:
+    matchLabels:
+      app: nec.msbu.core.webservice
+  strategy: 
+    type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: nec.msbu.core.webservice
+       app: nec.msbu.core.webservice
     spec:
       containers:
       - env:
@@ -34,3 +33,23 @@ spec:
         resources: {}
       restartPolicy: Always
 status: {}
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+   app: nec.msbu.core.webservice
+  name: nec.msbu.core.webservice
+spec:
+  clusterIP: None
+  ports:
+  - name: headless
+    port: 55555
+    targetPort: 0
+  selector:
+   app: nec.msbu.core.webservice
+status:
+  loadBalancer: {}
