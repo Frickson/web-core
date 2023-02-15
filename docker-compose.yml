@@ -1,0 +1,47 @@
+version: '3.4'
+
+services:
+  nec.msbu.core.web:
+    image: ${DOCKER_REGISTRY-}frickson/necmsbucoreweb
+    networks:
+      customnetwork:
+        ipv4_address: 172.26.67.33
+    ports:
+    - 5000:443
+    build:
+      context: .
+      dockerfile: src/NEC.MSBU.Core.Web/Dockerfile
+    environment:
+      - API_HOST=https://172.26.67.36
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticpassword
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - C:/home/kekxian/.aspnet/https:/https
+    depends_on:
+      - nec.msbu.core.webservice
+
+  nec.msbu.core.webservice:
+    image:  ${DOCKER_REGISTRY-}frickson/necmsbucorewebservice
+    ports:
+    - 5001:443
+    networks:
+      customnetwork:
+        ipv4_address: 172.26.67.36
+    build:
+      context: .
+      dockerfile: src/NEC.MSBU.Core.WebService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticpassword
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      -  C:/home/kekxian/.aspnet/https:/https
+
+networks:
+  customnetwork:
+    ipam:
+      config:
+        - subnet: 172.26.64.0/20
