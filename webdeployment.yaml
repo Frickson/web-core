@@ -17,6 +17,23 @@ spec:
       labels:
        app: web
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: chatbot-pod
+                operator: In
+                values:
+                - select
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: chatbot-prefer-pod
+                operator: In
+                values:
+                - select
       containers:
       - env:
         - name: API_HOST
@@ -46,6 +63,7 @@ metadata:
   labels:
    app: web
   name: web
+  namespace: core
 spec:
   ports:
   - name: "http"
@@ -57,3 +75,4 @@ spec:
   selector:
     app: web
   type: LoadBalancer
+  loadBalancerIP: 10.1.64.52

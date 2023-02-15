@@ -17,6 +17,23 @@ spec:
       labels:
        app: webservice
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: chatbot-pod
+                operator: In
+                values:
+                - select
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: chatbot-prefer-pod
+                operator: In
+                values:
+                - select
       containers:
       - env:
         - name: ASPNETCORE_ENVIRONMENT
@@ -44,6 +61,7 @@ metadata:
   labels:
    app: webservice
   name: webservice
+  namespace: core
 spec:
   clusterIP: None
   ports:
