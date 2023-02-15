@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.7.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nec.msbu.core.web
+  name: nec.msbu.core.web
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: nec.msbu.core.web
+    spec:
+      containers:
+      - env:
+        - name: API_HOST
+          value: https://172.26.67.36
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: ASPNETCORE_Kestrel__Certificates__Default__Password
+          value: crypticpassword
+        - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+          value: /https/aspnetapp.pfx
+        - name: ASPNETCORE_URLS
+          value: https://+:443;http://+80
+        image: frickson/necmsbucoreweb
+        name: nec.msbu.core.web
+        ports:
+        - containerPort: 443
+        resources: {}
+      restartPolicy: Always
+status: {}

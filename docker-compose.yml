@@ -1,8 +1,8 @@
-version: '3.4'
+version: '3'
 
 services:
   nec.msbu.core.web:
-    image: ${DOCKER_REGISTRY-}frickson/necmsbucoreweb
+    image: frickson/necmsbucoreweb
     networks:
       customnetwork:
         ipv4_address: 172.26.67.33
@@ -23,7 +23,7 @@ services:
       - nec.msbu.core.webservice
 
   nec.msbu.core.webservice:
-    image:  ${DOCKER_REGISTRY-}frickson/necmsbucorewebservice
+    image:  frickson/necmsbucorewebservice
     ports:
     - 5001:443
     networks:
