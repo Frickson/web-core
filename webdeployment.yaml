@@ -2,20 +2,20 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: nec.msbu.core.web
-  name: nec.msbu.core.web
+    app: web
+  name: web
   namespace: core
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nec.msbu.core.web
+      app: web
   strategy: 
     type: Recreate
   template:
     metadata:
       labels:
-       app: nec.msbu.core.web
+       app: web
     spec:
       containers:
       - env:
@@ -30,7 +30,7 @@ spec:
         - name: ASPNETCORE_URLS
           value: https://+:443;http://+80
         image: frickson/necmsbucoreweb
-        name: nec.msbu.core.web
+        name: web
         ports:
         - containerPort: 80
         - containerPort: 443
@@ -44,8 +44,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-   app: nec.msbu.core.web
-  name: nec.msbu.core.web
+   app: web
+  name: web
 spec:
   ports:
   - name: "http"
@@ -55,5 +55,5 @@ spec:
     port: 443
     targetPort: 443
   selector:
-    app: nec.msbu.core.web
+    app: web
   type: LoadBalancer
